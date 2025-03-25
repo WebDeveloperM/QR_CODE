@@ -38,7 +38,7 @@ const OrgTex = forwardRef(({ program, compyuterDetailData, setCompyuterDetailDat
     const [openCopyTab, setOpenCopyTab] = useState(false);
 
     const [compyuterData, setCompyuterData] = useState<Compyuter[]>([])
-    // const [compyuterDetailData, setCompyuterDetailData] = useState<Compyuter>()
+
     const [selectedCompyuterId, setSelectedCopyuterId] = useState<string | null>(null);
 
     // All selected Texnology items
@@ -69,6 +69,7 @@ const OrgTex = forwardRef(({ program, compyuterDetailData, setCompyuterDetailDat
     const [type_monitor, setTypeMonitorId] = useState<number[] | null>(null);
 
     const [isActive, setIsActive] = useState(true);
+    const [internet, setInternet] = useState(true);
 
     const token = localStorage.getItem('token')
     const navigate = useNavigate()
@@ -96,7 +97,7 @@ const OrgTex = forwardRef(({ program, compyuterDetailData, setCompyuterDetailDat
         if (!selectedCompyuterId) return;
         axioss
             .get(`${BASE_URL}/comp_detail/${selectedCompyuterId}`)
-            .then((response) => {  
+            .then((response) => {
                 setCompyuterDetailData(response.data);
             })
             .catch((err) => console.log(err));
@@ -159,6 +160,7 @@ const OrgTex = forwardRef(({ program, compyuterDetailData, setCompyuterDetailDat
             model_webcam,
             type_monitor,
             isActive,
+            internet,
             program: program,
             // slug: `${seal_number.value}-${mac_adress.value}`
         }
@@ -366,6 +368,23 @@ const OrgTex = forwardRef(({ program, compyuterDetailData, setCompyuterDetailDat
                                                     className={`w-full rounded-md  bg-transparent py-2 px-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${mac_adress.error ? 'border-red' : "border-stroke"}`}
                                                 />
                                                 {mac_adress.error && <p className="text-red-500 text-sm">{mac_adress.error}</p>}
+                                            </div>
+
+                                            <div className="col-span-3">
+                                                <div className="flex items-center gap-3 mt-10">
+                                                    <label className="flex items-center space-x-3 cursor-pointer text-gray-800 dark:text-gray-200">
+                                                        <span className="text-sm font-medium">Интернет</span>
+                                                        <input
+                                                            type="checkbox"
+                                                            defaultChecked={
+                                                                compyuterData ? compyuterDetailData?.internet : true
+
+                                                            }
+                                                            onChange={(e) => setInternet(e.target.checked)}
+                                                            className="w-4 h-4 border-gray-300 rounded focus:ring-2 focus:ring-brand-500 dark:bg-gray-700 dark:border-gray-600 dark:checked:bg-brand-500 dark:checked:border-brand-500 focus:ring-offset-0 focus:outline-none"
+                                                        />
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
 

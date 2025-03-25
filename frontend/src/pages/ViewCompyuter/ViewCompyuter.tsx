@@ -127,7 +127,18 @@ const ViewCompyuter = () => {
 
                         {data && <ModalDataInput label="Физический(MAC) адрес" inputData={data?.mac_adress} />}
 
+                        <label className="flex items-center space-x-3 cursor-pointer text-gray-800 dark:text-gray-200 mt-8">
+                          <span className="text-sm font-medium">Интернет</span>
+                          <input
+                            type="checkbox"
+                            defaultChecked={
+                              data ? data?.internet : true
 
+                            }
+                            disabled
+                            className="w-4 h-4 border-gray-300 rounded focus:ring-2 focus:ring-brand-500 dark:bg-gray-700 dark:border-gray-600 dark:checked:bg-brand-500 dark:checked:border-brand-500 focus:ring-offset-0 focus:outline-none"
+                          />
+                        </label>
                       </div>
                     </div>
 

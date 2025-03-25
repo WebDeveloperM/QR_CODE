@@ -78,6 +78,7 @@ export type Compyuter = {
     user: string,
     ipadresss: string,
     mac_adress: string,
+    
     qr_image: string,
     signature: string | null,
     joinDate: string,
@@ -99,7 +100,9 @@ export type InfoComputerData = {
     all_worked_compyuters_count: number,
     all_compyuters_with_printer: number,
     all_compyuters_with_scaner: number,
+    all_compyuters_with_mfo: number,
     all_compyuters_with_webcam: number,
+    all_compyuters_with_net: number
 };
 
 

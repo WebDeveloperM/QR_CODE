@@ -11,7 +11,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from django.core.exceptions import ValidationError
 from Инвентаризация.middleware import CurrentUserMiddleware
-
+from django.db.models.signals import m2m_changed
+from django.dispatch import receiver
 
 class Department(models.Model):
     name = models.CharField(max_length=255, verbose_name='Название цеха')
@@ -168,6 +169,17 @@ class Scaner(models.Model):
         verbose_name_plural = '2.2 Сканер'
 
 
+class MFO(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Название')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'МФО '
+        verbose_name_plural = '2.2 МФО'
+
+
 class TypeWebCamera(models.Model):
     name = models.CharField(max_length=255, verbose_name='Название')
 
@@ -279,6 +291,7 @@ class Program(models.Model):
         verbose_name = 'Программа '
         verbose_name_plural = 'Программа'
 
+import hashlib
 
 class Compyuter(models.Model):
     seal_number = models.CharField(max_length=255, verbose_name='Номер пломбы')
@@ -305,6 +318,7 @@ class Compyuter(models.Model):
     mac_adress = models.CharField(max_length=255, verbose_name='Физический(MAC) адрес', null=True, blank=True)
     printer = models.ManyToManyField(Printer, verbose_name='Принтеры', related_name="printer", null=True, blank=True)
     scaner = models.ManyToManyField(Scaner, verbose_name='Сканеры', related_name="scaner", null=True, blank=True)
+    mfo = models.ManyToManyField(Scaner, verbose_name='МФУ', related_name="mfo", null=True, blank=True) 
     type_webcamera = models.ManyToManyField(TypeWebCamera, related_name="typeCamera",
                                             verbose_name='Тип вебкамера', null=True, blank=True)
     model_webcam = models.ManyToManyField(ModelWebCamera, verbose_name='Модель вебкамеры', null=True, blank=True)
@@ -323,23 +337,15 @@ class Compyuter(models.Model):
     def __str__(self):
         return self.user
 
+
     def save(self, *args, **kwargs):
         user = CurrentUserMiddleware.get_current_user()
         if user and user.is_authenticated:
             self.updatedUser = user
 
-        # if not self.slug:
-        #     self.slug = f"computers/{self.mac_adress}"
-        # super().save(*args, **kwargs)
-
-    def save(self, *args, **kwargs):
-        user = CurrentUserMiddleware.get_current_user()  # Hozirgi foydalanuvchini olish
-        if user and user.is_authenticated:
-            self.updatedUser = user
-
         if not self.slug:  # Agar slug yo'q bo'lsa, yaratilsin
             self.slug = slugify(f"computers/{self.mac_adress}")
-        print(self.qr_image)
+
         if self.qr_image == "qr_codes/default.png":  # Agar qr_image mavjud bo'lmasa, yaratilsin
             self.generate_qr()
 
@@ -370,6 +376,8 @@ class Compyuter(models.Model):
     class Meta:
         verbose_name = 'Компьютеры '
         verbose_name_plural = 'Компьютеры'
+
+
 
 
 class ComputerAgent(models.Model):

@@ -1,12 +1,14 @@
-# Python bazasini tanlash
-FROM python:3.9-slim
+FROM python:3.10-slim
 
-# Ishlash papkasini yaratish
 WORKDIR /app
 
-# PostgreSQL uchun kerakli kutubxonalarni o‘rnatish
-RUN apt-get update && apt-get install -y gcc libpq-dev net-tools
-
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libpq-dev \
+    net-tools \
+    pkg-config \
+    default-libmysqlclient-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # Talablar faylini qo‘shish va pip o‘rnatish
 COPY requirements.txt .

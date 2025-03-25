@@ -74,6 +74,7 @@ const EditCompyuter = forwardRef(({ program }: Props, ref) => {
   const [type_monitor, setTypeMonitorId] = useState<number[] | null>(null);
 
   const [isActive, setIsActive] = useState(compyuterDetailData?.isActive);
+  const [internet, setInternet] = useState(compyuterDetailData?.internet);
 
   const token = localStorage.getItem('token');
   const { slug } = useParams();
@@ -175,6 +176,7 @@ const EditCompyuter = forwardRef(({ program }: Props, ref) => {
       model_webcam,
       type_monitor,
       isActive,
+      internet,
       program: program,
       slug: slug,
     };
@@ -418,7 +420,7 @@ const EditCompyuter = forwardRef(({ program }: Props, ref) => {
                     <div className="col-span-3">
                       {data && (
                         <MultySelectTexnology
-                          label="Тип вебкамера"
+                          label="Модель вебкамера"
                           selectData={data.model_webcam}
                           selectedTexnologyId={setModelWebcamId}
                           selectedIdComp={compyuterDetailData?.model_webcam}
@@ -566,6 +568,23 @@ const EditCompyuter = forwardRef(({ program }: Props, ref) => {
                         </p>
                       )}
                     </div>
+                    <div className="col-span-3">
+                      <div className="flex items-center gap-3 mt-10">
+                        <label className="flex items-center space-x-3 cursor-pointer text-gray-800 dark:text-gray-200">
+                          <span className="text-sm font-medium">Интернет</span>
+                          <input
+                            disabled
+                            type="checkbox"
+                            defaultChecked={
+                              compyuterData ? compyuterDetailData?.internet : true
+
+                            }
+                            onChange={(e) => setInternet(e.target.checked)}
+                            className="w-4 h-4 border-gray-300 rounded focus:ring-2 focus:ring-brand-500 dark:bg-gray-700 dark:border-gray-600 dark:checked:bg-brand-500 dark:checked:border-brand-500 focus:ring-offset-0 focus:outline-none"
+                          />
+                        </label>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="flex justify-between items-center mt-5">
@@ -586,174 +605,7 @@ const EditCompyuter = forwardRef(({ program }: Props, ref) => {
                   </div>
                 </form>
 
-                {/* <form onSubmit={handlarData} className="p-5 py-3 pb-5">
 
-                    <div className='grid sm:grid-cols-12 gap-4 '>
-                      <div className='col-span-3'>
-                        <label className="mb-3 block text-black dark:text-white">
-                          Номер пломбы
-                        </label>
-                        <input
-                          type="text"
-                          value={seal_number.value}
-                          onChange={(e) => setSealNumber({ value: e.target.value })}
-                          ref={inputSealNumberRef}
-                          placeholder="Номер пломбы"
-                          className={`w-full rounded-md  bg-transparent py-2 px-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${seal_number.error ? 'border-red' : "border-stroke"}`}
-                        />
-                        {seal_number.error && <p className="text-red-500 text-sm">{seal_number.error}</p>}
-                      </div>
-                      <div className='col-span-3'>
-                        {data && <EditCompyuterSeleced label='Цех' selectData={data} setSelectedDepartment={setSelectedDepartment} isSubmitted={isSubmitted} departmentData={compyuterDetailData?.departament.id ?? null} />}
-                      </div>
-                      <div className='col-span-3'>
-                        <label className="mb-3 block text-black dark:text-white">
-                          Пользователь
-                        </label>
-                        <input
-                          type="text"
-                          defaultValue={compyuterDetailData?.user}
-                          ref={inputUserRef}
-                          placeholder="Пользователь"
-                          onChange={(e) => setUser({ value: e.target.value })}
-                          className={`w-full rounded-md  bg-transparent py-2 px-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${user.error ? 'border-red' : "border-stroke"}`}
-                        />
-                        {user.error && <p className="text-red-500 text-sm">{user.error}</p>}
-
-                      </div>
-                      <div className='col-span-3'>
-                        <label className="mb-3 block text-black dark:text-white">
-                          Руководитель подразделения
-                        </label>
-                        <input
-                          value={localData}
-                          disabled
-                          type="text"
-                          placeholder="Руководитель подразделения"
-                          className={`w-full rounded-md  bg-transparent py-2 px-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${isSubmitted && !departament ? 'border-red' : "border-stroke"}`}
-                        />
-                        {isSubmitted && !departament ? <p className="text-red-500 text-sm">{"Обязательное поле"}</p> : ""}
-                      </div>
-
-                      <div className='col-span-3'>
-                        {data && <AddCompyuterSelecedTexnology label='Зав. склад' selectData={data.warehouse_manager} selectedTexnologyId={setSelectedWarehouseManagerId} selectedIdComp={compyuterDetailData?.warehouse_manager.id} isSubmitted={isSubmitted} />}
-                      </div>
-
-                      <div className='col-span-3'>
-                        {data && <AddCompyuterSelecedTexnology label='Тип орг.техники' selectData={data.type_compyuter} selectedTexnologyId={setSelectedTypeCompyuterId} selectedIdComp={compyuterDetailData?.type_compyuter.id} isSubmitted={isSubmitted} />}
-                      </div>
-
-                      <div className='col-span-3'>
-                        {data && <AddCompyuterSelecedTexnology label='Производитель МП' selectData={data.motherboard} selectedTexnologyId={setSelectedMotherboardId} selectedIdComp={compyuterDetailData?.motherboard} isSubmitted={isSubmitted} />}
-                      </div>
-
-                      <div className='col-span-3'>
-                        {data &&
-                          <AddCompyuterSelecedTexnology label='Модель МП'
-                            selectData={data.motherboard_model}
-                            selectedTexnologyId={setSelectedMotherboardModelId}
-                            selectedIdComp={compyuterDetailData?.motherboard_model.id} isSubmitted={isSubmitted} />}
-                      </div>
-                      <div className='col-span-3'>
-                        {data && <AddCompyuterSelecedTexnology label='Процессор' selectData={data.cpu} selectedTexnologyId={setCPUId} selectedIdComp={compyuterDetailData?.CPU.id} isSubmitted={isSubmitted} />}
-                      </div>
-
-                      <div className='col-span-3'>
-                        {data && <AddCompyuterSelecedTexnology label='Поколение процессора' selectData={data.generation} selectedTexnologyId={setGenerationId} selectedIdComp={compyuterDetailData?.generation.id} isSubmitted={isSubmitted} />}
-                      </div>
-                      <div className='col-span-3'>
-                        {data && <AddCompyuterSelecedTexnology label='Частота процессора' selectData={data.frequency} selectedTexnologyId={setFrequencyId} selectedIdComp={compyuterDetailData?.frequency.id} isSubmitted={isSubmitted} />}
-                      </div>
-                      <div className='col-span-3'>
-                        {data && <AddCompyuterSelecedTexnology label='Диск  HDD' selectData={data.hdd} selectedTexnologyId={setHddId} selectedIdComp={compyuterDetailData?.HDD.id} isSubmitted={isSubmitted} />}
-                      </div>
-                      <div className='col-span-3'>
-                        {data && <AddCompyuterSelecedTexnology label='Диск  SSD' selectData={data.ssd} selectedTexnologyId={setSsdId} selectedIdComp={compyuterDetailData?.SSD.id} isSubmitted={isSubmitted} />}
-                      </div>
-                      <div className='col-span-3'>
-                        {data && <AddCompyuterSelecedTexnology label='Тип диска' selectData={data.disk_type} selectedTexnologyId={setDiskTypeId} selectedIdComp={compyuterDetailData?.disk_type.id} isSubmitted={isSubmitted} />}
-                      </div>
-                      <div className='col-span-3'>
-                        {data && <AddCompyuterSelecedTexnology label='Тип оперативки' selectData={data.ram_type} selectedTexnologyId={setRamTypeId} selectedIdComp={compyuterDetailData?.RAM_type.id} isSubmitted={isSubmitted} />}
-                      </div>
-                      <div className='col-span-3'>
-                        {data && <AddCompyuterSelecedTexnology label='Размер оперативной памяти' selectData={data.ram_size} selectedTexnologyId={setRamSizeId} selectedIdComp={compyuterDetailData?.RAMSize.id} isSubmitted={isSubmitted} />}
-                      </div>
-                      <div className='col-span-3'>
-                        {data && <AddCompyuterSelecedTexnology label='Видеокарта' selectData={data.gpu} selectedTexnologyId={setGpuId} selectedIdComp={compyuterDetailData?.GPU.id} isSubmitted={isSubmitted} />}
-                      </div>
-
-                      <div className='col-span-3'>
-                        <label className="mb-3 block text-black dark:text-white">
-                          IPv4 адрес
-                        </label>
-                        <input
-                          type="text"
-                          ref={inputIPAddresRef}
-                          defaultValue={compyuterDetailData?.ipadresss}
-                          onChange={e => setIpAddressId({ value: e.target.value })}
-                          placeholder="IPv4 адрес"
-                          className={`w-full rounded-md  bg-transparent py-2 px-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${ipadresss.error ? 'border-red' : "border-stroke"}`}
-                        />
-                        {ipadresss.error && <p className="text-red-500 text-sm">{ipadresss.error}</p>}
-
-                      </div>
-
-                      <div className='col-span-3'>
-                        <label className="mb-3 block text-black dark:text-white">
-                          Физический(MAC) адрес
-                        </label>
-                        <input
-                          type="text"
-                          defaultValue={compyuterDetailData?.mac_adress}
-                          ref={inputMacAddresRef}
-                          onChange={e => setMacAddressId({ value: e.target.value })}
-                          placeholder="Физический(MAC) адрес"
-                          className={`w-full rounded-md  bg-transparent py-2 px-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${mac_adress.error ? 'border-red' : "border-stroke"}`}
-                        />
-                        {mac_adress.error && <p className="text-red-500 text-sm">{mac_adress.error}</p>}
-
-                      </div>
-
-                      <div className='col-span-3'>
-                        {data && <MultySelectTexnology label='Принтер' selectData={data.printer} selectedTexnologyId={setPrinterId} selectedIdComp={compyuterDetailData?.printer} isSubmitted={isSubmitted} />}
-                      </div>
-                      <div className='col-span-3'>
-                        {data && <MultySelectTexnology label='Сканер' selectData={data.scaner} selectedTexnologyId={setScanerId} selectedIdComp={compyuterDetailData?.scaner} isSubmitted={isSubmitted} />}
-                      </div>
-                      <div className='col-span-3'>
-                        {data && <MultySelectTexnology label='Тип вебкамера' selectData={data.type_webcamera} selectedTexnologyId={setTypeWebcameraId} selectedIdComp={compyuterDetailData?.type_webcamera} isSubmitted={isSubmitted} />}
-                      </div>
-
-
-                      <div className='col-span-3'>
-                        {compyuterDetailData?.model_webcam && <AddCompyuterSelecedTexnology label='Модель вебкамеры' selectData={data.model_webcam} selectedTexnologyId={setModelWebcamId} selectedIdComp={compyuterDetailData?.model_webcam.id} isSubmitted={isSubmitted} />}
-                      </div>
-
-                      <div className='col-span-3'>
-                        {data && <MultySelectTexnology label='Тип Монитора' selectData={data.type_monitor} selectedTexnologyId={setTypeMonitorId} selectedIdComp={compyuterDetailData?.type_webcamera} isSubmitted={isSubmitted} />}
-                      </div>
-                    </div>
-
-                    <div className='flex justify-between items-center mt-5'>
-                      <div className="flex items-center gap-3 ">
-                        <label className="flex items-center space-x-3 cursor-pointer text-gray-800 dark:text-gray-200">
-                          <input type="checkbox"
-                            defaultChecked={compyuterData ? compyuterDetailData?.isActive : true}
-                            onChange={e => setIsActive(e.target.checked)}
-                            className="w-4 h-4 border-gray-300 rounded focus:ring-2 focus:ring-brand-500 dark:bg-gray-700 dark:border-gray-600 dark:checked:bg-brand-500 dark:checked:border-brand-500 focus:ring-offset-0 focus:outline-none" />
-                          <span className="text-sm font-medium">Активно</span>
-                        </label>
-                      </div>
-
-                      <button type='submit' className="flex items-center justify-center gap-3 rounded-md bg-meta-3 py-2 px-5 text-center font-medium text-white hover:bg-opacity-90 lg:px-5 xl:px-7" >
-                        <IoIosSave className='text-2xl' />
-                        Сохранить
-                      </button>
-
-                    </div>
-
-                  </form> */}
               </div>
             ) : (
               <div className="grid grid-cols-12">

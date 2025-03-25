@@ -161,8 +161,9 @@ export default function ComputerTable({ checkedComputer, setDeleteCompForChecked
                 </div>
             </div>
 
-            <DataTable value={computers} paginator rows={5} filters={filters}
-                paginatorTemplate="PrevPageLink PageLinks NextPageLink"
+            <DataTable value={computers} rows={500} filters={filters}
+                // paginator
+                // paginatorTemplate="PrevPageLink PageLinks NextPageLink"
                 emptyMessage={
                     <div style={{ textAlign: "center", padding: "20px", fontSize: "16px", fontWeight: "bold", color: "gray" }}>
                         🚫 Данные не найдены

@@ -132,16 +132,20 @@ class InfoCompyuterApiView(APIView):
     def get(request, *args, **kwargs):
         all_compyuters = Compyuter.objects.all().count()
         all_worked_compyuters_count = Compyuter.objects.filter(isActive=True).count()
-        all_compyuters_with_printer = Compyuter.objects.filter(printer__isnull=False).distinct().count()
-        all_compyuters_with_scaner = Compyuter.objects.filter(scaner__isnull=False).distinct().count()
-
-        all_compyuters_with_webcam = Compyuter.objects.filter(type_webcamera__isnull=False).distinct().count()
+        all_compyuters_with_printer = Compyuter.objects.filter(printer__isnull=False).exclude(printer__name="Нет").distinct().count()
+        all_compyuters_with_scaner = Compyuter.objects.filter(scaner__isnull=False).exclude(scaner__name="Нет").distinct().count()
+        all_compyuters_with_mfo = Compyuter.objects.filter(mfo=True).distinct().count()
+        all_compyuters_with_net = Compyuter.objects.filter(internet=True).distinct().count()
+        all_compyuters_with_webcam = Compyuter.objects.filter(type_webcamera__isnull=False).exclude(type_webcamera__name="Нет").distinct().count()
+        print(all_compyuters_with_scaner)
         info = {
             "all_compyuters_count": all_compyuters,
             "all_worked_compyuters_count": all_worked_compyuters_count,
             "all_compyuters_with_printer": all_compyuters_with_printer,
             "all_compyuters_with_scaner": all_compyuters_with_scaner,
+            "all_compyuters_with_mfo": all_compyuters_with_mfo,
             "all_compyuters_with_webcam": all_compyuters_with_webcam,
+            "all_compyuters_with_net": all_compyuters_with_net,
         }
         return Response(info)
 
@@ -190,7 +194,7 @@ class GetTexnologyFromAgent(APIView):
                 created = True
 
             # Simple fields
-            simple_fields = ["user", "internet"]
+            simple_fields = ["user", "slug", "internet"]
             for field in simple_fields:
                 if field in data:
                     setattr(comp, field, data.get(field, None))
@@ -220,18 +224,18 @@ class GetTexnologyFromAgent(APIView):
                     setattr(comp, field, obj)
                 elif not getattr(comp, field):
                     setattr(comp, field, model.objects.get_or_create(name="Нет")[0])
-            comp.slug = slugify(f"computers/{mac_address}")
+            # if not comp.slug:
+            #     comp.slug = f"computers/{comp.mac_adress}"
+
+            comp.internet = data.get("Internet")
             comp.save()
             # ManyToMany fields (clear and add new)
             m2m_fields = {
-                "printer": Printer,
-                "scaner": Scaner,
+                # "printer": Printer,
+                # "scaner": Scaner,
                 "type_webcamera": TypeWebCamera,
                 "model_webcam": ModelWebCamera,
                 "type_monitor": Monitor,
-                "program": Program,
-                "printer": Printer,
-                "scaner": Scaner,
             }
 
             for field, model in m2m_fields.items():
@@ -257,8 +261,7 @@ class FilterDataByIPApiView(APIView):
     def post(request, *args, **kwargs):
        
         key = request.data.get('key')
-    
-      
+
         if key == "Все компьютеры":
      
             computers = Compyuter.objects.all().distinct()
@@ -269,15 +272,20 @@ class FilterDataByIPApiView(APIView):
 
         elif key == "Принтеры":
   
-            computers = Compyuter.objects.filter(printer__isnull=False).distinct()
+            computers = Compyuter.objects.filter(printer__isnull=False).exclude(printer__name="Нет").distinct()
 
         elif key == "Сканеры":
-   
-            computers = Compyuter.objects.filter(scaner__isnull=False).distinct()
+            computers = Compyuter.objects.filter(scaner__isnull=False).exclude(scaner__name="Нет").distinct()
+
+        elif key == "МФУ":
+            computers = Compyuter.objects.filter(mfo=True).distinct()
+
+        elif key == "Интернет":
+            computers = Compyuter.objects.filter(internet=True).distinct()
 
         elif key == "Веб-камеры":
            
-            computers = Compyuter.objects.filter(type_webcamera__isnull=False).distinct()
+            computers = Compyuter.objects.filter(type_webcamera__isnull=False).exclude(type_webcamera__name="Нет").distinct()
 
         else:
      

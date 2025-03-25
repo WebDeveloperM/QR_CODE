@@ -12,9 +12,9 @@ admin.site.register(ProgramLicense)
 @admin.register(Compyuter)
 class CompyuterAdmin(admin.ModelAdmin):
     list_display = (
+        'user',
         'seal_number',
         'departament',
-        'user',
         'warehouse_manager',
         'type_compyuter',
         'motherboard',
@@ -29,6 +29,7 @@ class CompyuterAdmin(admin.ModelAdmin):
         'RAMSize',
         'GPU',
         'ipadresss',
+        'internet',
         'mac_adress',
         'qr_image',
         'joinDate',
@@ -39,9 +40,9 @@ class CompyuterAdmin(admin.ModelAdmin):
     )
 
     fields = (
+        'user',
         'seal_number',
         'departament',
-        'user',
         'warehouse_manager',
         'type_compyuter',
         'motherboard',
@@ -62,6 +63,7 @@ class CompyuterAdmin(admin.ModelAdmin):
         'model_webcam',
         'program',
         'type_monitor',
+        'internet',
         'slug',
         'isActive'
     )
@@ -93,3 +95,4 @@ admin.site.register(Monitor)
 admin.site.register(Printer)
 admin.site.register(Scaner)
 admin.site.register(Program)
+admin.site.register(MFO)

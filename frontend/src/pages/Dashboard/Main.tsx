@@ -7,10 +7,12 @@ import { isAuthenticated } from '../../utils/auth';
 import { Navigate } from 'react-router-dom';
 import { FaComputer } from "react-icons/fa6";
 import { AiOutlinePrinter } from "react-icons/ai"
-import { MdOutlineAdfScanner } from "react-icons/md";
+import { MdOutlineAdfScanner, MdSignalWifiStatusbarConnectedNoInternet2 } from "react-icons/md";
 import { RiComputerLine, RiWebcamLine } from "react-icons/ri";
 import ComputerTable from '../../components/Tables/DataTable';
 import Skeleton from '../../components/Skeleton/Skeleton';
+import { GrCloudComputer } from 'react-icons/gr';
+import { TbFunctionFilled } from 'react-icons/tb';
 
 const Main: React.FC = () => {
   const [data, setData] = useState<Compyuter[] | null>()
@@ -32,15 +34,13 @@ const Main: React.FC = () => {
     axioss
       .get(`${BASE_URL}/info-comp/`)
       .then((response) => {
-        console.log(response.data);
-        
         setInfoCompData(response.data);
       })
       .catch((err) => console.log(err));
   }, []);
 
   useEffect(() => {
-    if (!selectKey) return;  
+    if (!selectKey) return;
 
     axioss
       .post(`${BASE_URL}/filter-data/`, { key: selectKey })
@@ -51,7 +51,7 @@ const Main: React.FC = () => {
       .catch((err) => console.log("Xatolik tafsilotlari:", err.response?.data));
   }, [selectKey, deleteCompForChecked]);
 
-console.log(infoCompData?.all_worked_compyuters_count);
+  console.log(infoCompData?.all_worked_compyuters_count);
 
 
   if (!isAuthenticated()) {
@@ -62,28 +62,38 @@ console.log(infoCompData?.all_worked_compyuters_count);
     <>
       {data ?
         <>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-5 2xl:gap-7.5">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
 
             <CardDataStats title="Все компьютеры" total={`${infoCompData?.all_compyuters_count}`} setSelectKey={setSelectKey}>
-              <FaComputer className="fill-primary dark:fill-white" width="20" height="22" />
+              <FaComputer className="fill-primary dark:fill-white text-2xl" width="35" height="30" />
             </CardDataStats>
 
             <CardDataStats title="Рабочие компьютеры" total={`${infoCompData?.all_worked_compyuters_count}`} setSelectKey={setSelectKey}>
-              <RiComputerLine className="fill-primary dark:fill-white" width="20" height="22" />
-            </CardDataStats>
-
-            <CardDataStats title="Принтеры" total={`${infoCompData?.all_compyuters_with_printer}`} setSelectKey={setSelectKey} >
-              <AiOutlinePrinter className="fill-primary dark:fill-white" width="20" height="22" />
-            </CardDataStats>
-
-            <CardDataStats title="Сканеры" total={`${infoCompData?.all_compyuters_with_scaner}`} setSelectKey={setSelectKey}>
-              <MdOutlineAdfScanner className="fill-primary dark:fill-white" width="20" height="22" />
+              <RiComputerLine className="fill-primary dark:fill-white text-2xl" width="35" height="30" />
             </CardDataStats>
 
             <CardDataStats title="Веб-камеры" total={`${infoCompData?.all_compyuters_with_webcam}`} setSelectKey={setSelectKey}>
-              <RiWebcamLine className="fill-primary dark:fill-white" width="20" height="22" />
-
+              <RiWebcamLine className="fill-primary dark:fill-white text-2xl" width="35" height="30" />
             </CardDataStats>
+
+
+
+            <CardDataStats title="Интернет" total={`${infoCompData?.all_compyuters_with_net}`} setSelectKey={setSelectKey}>
+              <MdSignalWifiStatusbarConnectedNoInternet2 style={{ color: "#3C50E0" }} className="fill-primary dark:fill-white text-2xl" width="20" height="22" />
+            </CardDataStats>
+
+            <CardDataStats title="Принтеры" total={`${infoCompData?.all_compyuters_with_printer}`} setSelectKey={setSelectKey} >
+              <AiOutlinePrinter className="fill-primary dark:fill-white text-2xl" width="35" height="30" />
+            </CardDataStats>
+
+            <CardDataStats title="Сканеры" total={`${infoCompData?.all_compyuters_with_scaner}`} setSelectKey={setSelectKey}>
+              <MdOutlineAdfScanner className="fill-primary dark:fill-white text-2xl" width="35" height="30" />
+            </CardDataStats>
+
+            <CardDataStats title="МФУ" total={`${infoCompData?.all_compyuters_with_mfo}`} setSelectKey={setSelectKey}>
+              <TbFunctionFilled style={{ color: "#3C50E0" }} className="fill-primary dark:fill-white text-2xl" width="35" height="30" />
+            </CardDataStats>
+
           </div>
 
           <div className='mt-6'>
