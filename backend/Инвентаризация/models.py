@@ -13,6 +13,8 @@ from django.core.exceptions import ValidationError
 from Инвентаризация.middleware import CurrentUserMiddleware
 from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
+from simple_history.models import HistoricalRecords
+
 
 class Department(models.Model):
     name = models.CharField(max_length=255, verbose_name='Название цеха')
@@ -176,8 +178,8 @@ class MFO(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = 'МФО '
-        verbose_name_plural = '2.2 МФО'
+        verbose_name = 'МФУ '
+        verbose_name_plural = '2.2 МФУ'
 
 
 class TypeWebCamera(models.Model):
@@ -318,7 +320,7 @@ class Compyuter(models.Model):
     mac_adress = models.CharField(max_length=255, verbose_name='Физический(MAC) адрес', null=True, blank=True)
     printer = models.ManyToManyField(Printer, verbose_name='Принтеры', related_name="printer", null=True, blank=True)
     scaner = models.ManyToManyField(Scaner, verbose_name='Сканеры', related_name="scaner", null=True, blank=True)
-    mfo = models.ManyToManyField(Scaner, verbose_name='МФУ', related_name="mfo", null=True, blank=True) 
+    mfo = models.ManyToManyField(MFO, verbose_name='МФУ', related_name="mfo", null=True, blank=True) 
     type_webcamera = models.ManyToManyField(TypeWebCamera, related_name="typeCamera",
                                             verbose_name='Тип вебкамера', null=True, blank=True)
     model_webcam = models.ManyToManyField(ModelWebCamera, verbose_name='Модель вебкамеры', null=True, blank=True)
@@ -333,6 +335,7 @@ class Compyuter(models.Model):
     updatedAt = models.DateTimeField(auto_now=True, verbose_name="Дата изменения", null=True, blank=True)
     slug = models.SlugField(unique=True, blank=True)
     isActive = models.BooleanField(default=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.user

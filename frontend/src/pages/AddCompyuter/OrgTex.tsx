@@ -64,9 +64,12 @@ const OrgTex = forwardRef(({ program, compyuterDetailData, setCompyuterDetailDat
 
     const [printer, setPrinterId] = useState<number[] | null>(null);
     const [scaner, setScanerId] = useState<number[] | null>(null);
+    const [mfo, setMfoId] = useState<number[] | null>(null);
     const [type_webcamera, setTypeWebcameraId] = useState<number[] | null>(null);
-    const [model_webcam, setModelWebcamId] = useState<number | null>(null);
+    const [model_webcam, setModelWebcamId] = useState<number[] | null>(null);
     const [type_monitor, setTypeMonitorId] = useState<number[] | null>(null);
+    console.log(mfo, "3333333333333");
+    console.log(scaner, "222222222222");
 
     const [isActive, setIsActive] = useState(true);
     const [internet, setInternet] = useState(true);
@@ -156,13 +159,13 @@ const OrgTex = forwardRef(({ program, compyuterDetailData, setCompyuterDetailDat
             mac_adress: mac_adress.value,
             printer,
             scaner,
+            mfo,
             type_webcamera,
             model_webcam,
             type_monitor,
             isActive,
             internet,
             program: program,
-            // slug: `${seal_number.value}-${mac_adress.value}`
         }
 
         axioss
@@ -274,18 +277,21 @@ const OrgTex = forwardRef(({ program, compyuterDetailData, setCompyuterDetailDat
                                         </div>
 
                                         <h1 className='py-4 font-semibold'>Периферийные устройства</h1>
-                                        <div className='grid sm:grid-cols-12 gap-4 border-b pb-5'>
-                                            <div className='col-span-3'>
+                                        <div className='grid sm:grid-cols-10 gap-4 border-b pb-5'>
+                                            <div className='col-span-2'>
                                                 {data && <MultySelectTexnology label='Принтер' selectData={data.printer} selectedTexnologyId={setPrinterId} selectedIdComp={compyuterDetailData?.printer} isSubmitted={isSubmitted} />}
                                             </div>
-                                            <div className='col-span-3'>
+                                            <div className='col-span-2'>
                                                 {data && <MultySelectTexnology label='Сканер' selectData={data.scaner} selectedTexnologyId={setScanerId} selectedIdComp={compyuterDetailData?.scaner} isSubmitted={isSubmitted} />}
                                             </div>
-                                            <div className='col-span-3'>
+                                            <div className='col-span-2'>
+                                                {data && <MultySelectTexnology label='МФУ' selectData={data.mfo} selectedTexnologyId={setMfoId} selectedIdComp={compyuterDetailData?.mfo} isSubmitted={isSubmitted} />}
+                                            </div>
+                                            <div className='col-span-2'>
                                                 {data && <MultySelectTexnology label='Тип вебкамера' selectData={data.type_webcamera} selectedTexnologyId={setTypeWebcameraId} selectedIdComp={compyuterDetailData?.type_webcamera} isSubmitted={isSubmitted} />}
                                             </div>
-                                            <div className='col-span-3'>
-                                                {data.model_webcam && <AddCompyuterSelecedTexnology label='Модель вебкамеры' selectData={data.model_webcam} selectedTexnologyId={setModelWebcamId} selectedIdComp={compyuterDetailData?.model_webcam} isSubmitted={isSubmitted} />}
+                                            <div className='col-span-2'>
+                                                {data.model_webcam && <MultySelectTexnology label='Модель вебкамеры' selectData={data.model_webcam} selectedTexnologyId={setModelWebcamId} selectedIdComp={compyuterDetailData?.model_webcam} isSubmitted={isSubmitted} />}
                                             </div>
                                         </div>
 

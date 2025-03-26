@@ -16,6 +16,7 @@ import { isAuthenticated } from '../../utils/auth';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import EditCompyuterSeleced from '../../components/SelectedGroup/EditCompyuterSeleced';
+import { log } from 'console';
 
 type Props = {
   program: number[] | null;
@@ -69,10 +70,13 @@ const EditCompyuter = forwardRef(({ program }: Props, ref) => {
   }>({});
   const [printer, setPrinterId] = useState<number[] | null>(null);
   const [scaner, setScanerId] = useState<number[] | null>(null);
+  const [mfo, setMfoId] = useState<number[] | null>(null);
   const [type_webcamera, setTypeWebcameraId] = useState<number[] | null>(null);
   const [model_webcam, setModelWebcamId] = useState<number[] | null>(null);
   const [type_monitor, setTypeMonitorId] = useState<number[] | null>(null);
-
+  console.log(mfo);
+  console.log(scaner, "5555555");
+  
   const [isActive, setIsActive] = useState(compyuterDetailData?.isActive);
   const [internet, setInternet] = useState(compyuterDetailData?.internet);
 
@@ -172,6 +176,7 @@ const EditCompyuter = forwardRef(({ program }: Props, ref) => {
       mac_adress: mac_adress.value,
       printer,
       scaner,
+      mfo,
       type_webcamera,
       model_webcam,
       type_monitor,
@@ -196,10 +201,13 @@ const EditCompyuter = forwardRef(({ program }: Props, ref) => {
         else toast.error('Произошла ошибка.');
       });
   };
+  console.log(compyuterDetailData)
+
 
   useImperativeHandle(ref, () => ({
     submit: handlarData,
   }));
+
 
 
 
@@ -401,6 +409,17 @@ const EditCompyuter = forwardRef(({ program }: Props, ref) => {
                           selectData={data.scaner}
                           selectedTexnologyId={setScanerId}
                           selectedIdComp={compyuterDetailData?.scaner}
+                          isSubmitted={isSubmitted}
+                        />
+                      )}
+                    </div>
+                    <div className="col-span-3">
+                      {data && (
+                        <MultySelectTexnology
+                          label="МФУ"
+                          selectData={data.mfo}
+                          selectedTexnologyId={setMfoId}
+                          selectedIdComp={compyuterDetailData?.mfo}
                           isSubmitted={isSubmitted}
                         />
                       )}

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import *
-
+from simple_history.admin import SimpleHistoryAdmin
 # Register your models here.
 
 
@@ -8,9 +8,75 @@ admin.site.register(Department)
 admin.site.register(ComputerAgent)
 admin.site.register(ProgramLicense)
 
+# @admin.register(Compyuter)
+# class CompyuterAdmin(admin.ModelAdmin):
+#     list_display = (
+#         'user',
+#         'seal_number',
+#         'departament',
+#         'warehouse_manager',
+#         'type_compyuter',
+#         'motherboard',
+#         'motherboard_model',
+#         'CPU',
+#         'generation',
+#         'frequency',
+#         'HDD',
+#         'SSD',
+#         'disk_type',
+#         'RAM_type',
+#         'RAMSize',
+#         'GPU',
+#         'ipadresss',
+#         'internet',
+#         'mac_adress',
+#         'qr_image',
+#         'joinDate',
+#         'addedUser',
+#         'updatedUser',
+#         'updatedAt',
+#         'isActive',
+#     )
 
-@admin.register(Compyuter)
-class CompyuterAdmin(admin.ModelAdmin):
+#     fields = (
+#         'user',
+#         'seal_number',
+#         'departament',
+#         'warehouse_manager',
+#         'type_compyuter',
+#         'motherboard',
+#         'motherboard_model',
+#         'CPU',
+#         'generation',
+#         'frequency',
+#         'HDD',
+#         'SSD',
+#         'disk_type',
+#         'RAM_type',
+#         'RAMSize',
+#         'GPU',
+#         'ipadresss',
+#         'mac_adress',
+#         'scaner',
+#         'type_webcamera',
+#         'model_webcam',
+#         'program',
+#         'type_monitor',
+#         'internet',
+#         'slug',
+#         'isActive'
+#     )
+
+#     search_fields = ('seal_number', 'departament')
+
+#     def save_model(self, request, obj, form, change):
+#         if not obj.addedUser:
+#             obj.addedUser = request.user
+#         super().save_model(request, obj, form, change)
+
+# admin.site.register(Compyuter, CompyuterAdmin)
+
+class CompyuterAdmin(SimpleHistoryAdmin):
     list_display = (
         'user',
         'seal_number',
@@ -37,6 +103,7 @@ class CompyuterAdmin(admin.ModelAdmin):
         'updatedUser',
         'updatedAt',
         'isActive',
+        'history'
     )
 
     fields = (
@@ -59,21 +126,19 @@ class CompyuterAdmin(admin.ModelAdmin):
         'ipadresss',
         'mac_adress',
         'scaner',
+        'mfo',
         'type_webcamera',
         'model_webcam',
         'program',
         'type_monitor',
         'internet',
         'slug',
-        'isActive'
+        'isActive', 
+        # 'history'
     )
+    search_fields = ('seal_number', 'user', 'warehouse_manager__name')
 
-    search_fields = ('seal_number', 'departament')
-
-    def save_model(self, request, obj, form, change):
-        if not obj.addedUser:
-            obj.addedUser = request.user
-        super().save_model(request, obj, form, change)
+admin.site.register(Compyuter, CompyuterAdmin)
 
 
 admin.site.register(TypeCompyuter)

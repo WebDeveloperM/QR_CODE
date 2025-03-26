@@ -88,19 +88,21 @@ const ViewCompyuter = () => {
                       </div>
 
                       <h1 className='p-5 pt-2 pb-3 font-semibold'>Периферийные устройства</h1>
-                      <div className="grid sm:grid-cols-12 gap-4 p-5 py-3 pb-7 border-b">
+                      <div className="grid sm:grid-cols-10 gap-4 p-5 py-3 pb-7 border-b">
 
-                        <div className='col-span-3'>
+                        <div className='col-span-2'>
                           {data && <ModalMultySelectInputTexnology label="Принтер" selectedIdComp={data?.printer} />}
                         </div>
-                        <div className='col-span-3'>
+                        <div className='col-span-2'>
                           {data && <ModalMultySelectInputTexnology label="Сканер" selectedIdComp={data?.scaner} />}
                         </div>
-
-                        <div className='col-span-3'>
+                        <div className='col-span-2'>
+                          {data && <ModalMultySelectInputTexnology label="МФУ" selectedIdComp={data?.mfo} />}
+                        </div>
+                        <div className='col-span-2'>
                           {data && <ModalMultySelectInputTexnology label="Тип вебкамера" selectedIdComp={data?.type_webcamera} />}
                         </div>
-                        <div className='col-span-3'>
+                        <div className='col-span-2'>
                           {data && <ModalMultySelectInputTexnology label="Модель вебкамеры" selectedIdComp={data?.model_webcam} />}
                         </div>
 

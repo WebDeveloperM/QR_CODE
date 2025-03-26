@@ -68,6 +68,7 @@ export type Compyuter = {
     printer: GenericType[],
 
     scaner: GenericType[],
+    mfo: GenericType[],
 
     type_webcamera: GenericType[],
 
@@ -78,7 +79,7 @@ export type Compyuter = {
     user: string,
     ipadresss: string,
     mac_adress: string,
-    
+
     qr_image: string,
     signature: string | null,
     joinDate: string,

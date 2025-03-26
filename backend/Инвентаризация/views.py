@@ -14,10 +14,14 @@ from django.contrib import messages
 from .utils import import_computers_from_excel
 from django.shortcuts import get_object_or_404
 from django.db.models import Count
-import getmac
 from django.db import transaction
 from django.template.defaultfilters import slugify
+from datetime import datetime
+from simple_history.utils import update_change_reason
 
+
+# Получаем текущее время и дату
+now = datetime.now()
 class TexnologyApiView(APIView):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
@@ -41,6 +45,7 @@ class TexnologyApiView(APIView):
         gpu = GPUSerializer(GPU.objects.all(), many=True).data
         printer = PrinterSerializer(Printer.objects.all(), many=True).data
         scaner = ScanerSerializer(Scaner.objects.all(), many=True).data
+        mfo = MfoSerializer(MFO.objects.all(), many=True).data
         type_webcamera = TypeWebCameraSerializer(TypeWebCamera.objects.all(), many=True).data
         model_webcam = ModelWebCameraSerializer(ModelWebCamera.objects.all(), many=True).data
         type_monitor = MonitorSerializer(Monitor.objects.all(), many=True).data
@@ -67,6 +72,7 @@ class TexnologyApiView(APIView):
             'gpu': gpu,
             'printer': printer,
             'scaner': scaner,
+            'mfo': mfo,
             'type_webcamera': type_webcamera,
             'model_webcam': model_webcam,
             'type_monitor': type_monitor,
@@ -159,7 +165,8 @@ class AddCompyuterApiView(APIView):
         request.data['addedUser'] = request.user.id
         serializer = AddCompyuterSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            instance = serializer.save()
+            update_change_reason(instance, f"{request.user}")
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -305,6 +312,7 @@ class EditCompyuterApiView(APIView):
         instance = get_object_or_404(Compyuter, slug=kwargs.get('slug'))
         serializer = AddCompyuterSerializer(instance, data=request.data)
         if serializer.is_valid():
+            update_change_reason(instance, f"{request.user}")
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

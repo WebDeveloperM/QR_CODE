@@ -1,7 +1,7 @@
 # accounts/serializers.py
 from rest_framework import serializers
 from .models import *
-
+from simple_history.utils import update_change_reason
 
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -86,6 +86,11 @@ class ScanerSerializer(serializers.ModelSerializer):
         model = Scaner
         fields = "__all__"
 
+class MfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MFO
+        fields = ("id", "name")
+
 
 class TypeWebCameraSerializer(serializers.ModelSerializer):
     class Meta:
@@ -118,10 +123,50 @@ class MonitorSerializer(serializers.ModelSerializer):
 
 
 class AddCompyuterSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Compyuter
-        fields = "__all__"
-
+        fields = (
+        'id',
+        'seal_number',
+        'departament',
+        'user',
+        'warehouse_manager',
+        'type_compyuter',
+        'motherboard',
+        'motherboard_model',
+        'CPU',
+        'generation',
+        'frequency',
+        'HDD',
+        'SSD',
+        'disk_type',
+        'RAM_type',
+        'RAMSize',
+        'GPU',
+        'ipadresss',
+        'mac_adress',
+        'printer',
+        'scaner',
+        'mfo',
+        'type_webcamera',
+        'model_webcam',
+        'program',
+        'qr_image',
+        'bg_image',
+        'type_monitor',
+        'internet',
+        'slug',
+        'isActive', 
+        'joinDate', 
+        'addedUser',
+        'updatedUser',
+        'updatedAt',
+        'slug',
+        'isActive',
+        # 'history',
+    )
+        
 
 class ProgramLicenseSerializer(serializers.ModelSerializer):
     class Meta:
@@ -160,6 +205,7 @@ class CompyuterSerializer(serializers.ModelSerializer):
     model_webcam = ModelWebCameraSerializer(many=True, read_only=True)
     type_monitor = MonitorSerializer(many=True, read_only=True)
     isActive = serializers.BooleanField(read_only=True)
+    mfo = MfoSerializer(many=True, read_only=True)
 
 
     def to_representation(self, instance):
@@ -185,6 +231,8 @@ class CompyuterSerializer(serializers.ModelSerializer):
             Program.objects.filter(id__in=program_ids, license_type='no-license', type='additional'),
             many=True
         ).data
+
+
 
         return data
 

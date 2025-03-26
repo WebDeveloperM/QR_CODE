@@ -55,3 +55,4 @@ drf_spectacular
 drf_spectacular_sidecar
 pandas
 getmac
+django-simple-history

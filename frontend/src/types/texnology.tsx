@@ -44,6 +44,7 @@ export interface TexnologyDataStructure {
     gpu: GenericType[];
     printer: GenericType[];
     scaner: GenericType[];
+    mfo: GenericType[];
     type_webcamera: GenericType[];
     model_webcam: GenericType[];
     type_monitor: GenericType[];
