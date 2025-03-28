@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ahl8&d=hrn@lp!hr0l87u#gf+pk&75!l2*o8$i#4uu&0l-copz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -108,14 +108,17 @@ DATABASES = {
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'qr_code_db',
-#         'USER': "postgres",
-#         'PASSWORD': "shMM1514",
-#         'HOST': "localhost",
+#         'NAME': 'qr_code',
+#         'USER': "admin_bnpz",
+#         'PASSWORD': "shMM151416",
+#         'HOST': "host.docker.internal",
 #         'PORT': 5432,
+#         'OPTIONS': {
+#             'client_encoding': 'UTF8',
+#         }
 #     }
 # }
-#
+
 
 # DATABASES = {
 #     'default': dj_database_url.config(

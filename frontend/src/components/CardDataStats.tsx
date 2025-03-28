@@ -27,7 +27,7 @@ const CardDataStats: React.FC<CardDataStatsProps> = ({
           </div>
         </div>
         <div className='col-span-2'>
-          <div className='2xl:block hidden'>
+          <div className=''>
             <div className="flex h-11.5 w-11.5 items-center justify-center rounded-full bg-meta-2 dark:bg-meta-4">
               {children}
             </div>

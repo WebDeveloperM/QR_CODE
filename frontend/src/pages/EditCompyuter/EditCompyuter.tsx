@@ -209,8 +209,6 @@ const EditCompyuter = forwardRef(({ program }: Props, ref) => {
   }));
 
 
-
-
   if (!isAuthenticated()) {
     return <Navigate to="/auth/signin" />;
   }

@@ -70,7 +70,12 @@ const Main: React.FC = () => {
 
             <CardDataStats title="Рабочие компьютеры" total={`${infoCompData?.all_worked_compyuters_count}`} setSelectKey={setSelectKey}>
               <RiComputerLine className="fill-primary dark:fill-white text-2xl" width="35" height="30" />
+            </CardDataStats>    
+            
+            <CardDataStats title="Не рабочие компьютеры" total={`${infoCompData?.all_noworked_compyuters_count}`} setSelectKey={setSelectKey}>
+              <RiComputerLine className="fill-primary dark:fill-white text-2xl" width="35" height="30" />
             </CardDataStats>
+        
 
             <CardDataStats title="Веб-камеры" total={`${infoCompData?.all_compyuters_with_webcam}`} setSelectKey={setSelectKey}>
               <RiWebcamLine className="fill-primary dark:fill-white text-2xl" width="35" height="30" />

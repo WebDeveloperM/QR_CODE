@@ -138,15 +138,17 @@ class InfoCompyuterApiView(APIView):
     def get(request, *args, **kwargs):
         all_compyuters = Compyuter.objects.all().count()
         all_worked_compyuters_count = Compyuter.objects.filter(isActive=True).count()
+        all_noworked_compyuters_count = Compyuter.objects.filter(isActive=False).count()
         all_compyuters_with_printer = Compyuter.objects.filter(printer__isnull=False).exclude(printer__name="Нет").distinct().count()
         all_compyuters_with_scaner = Compyuter.objects.filter(scaner__isnull=False).exclude(scaner__name="Нет").distinct().count()
         all_compyuters_with_mfo = Compyuter.objects.filter(mfo=True).distinct().count()
         all_compyuters_with_net = Compyuter.objects.filter(internet=True).distinct().count()
         all_compyuters_with_webcam = Compyuter.objects.filter(type_webcamera__isnull=False).exclude(type_webcamera__name="Нет").distinct().count()
-        print(all_compyuters_with_scaner)
+      
         info = {
             "all_compyuters_count": all_compyuters,
             "all_worked_compyuters_count": all_worked_compyuters_count,
+            "all_noworked_compyuters_count": all_noworked_compyuters_count,
             "all_compyuters_with_printer": all_compyuters_with_printer,
             "all_compyuters_with_scaner": all_compyuters_with_scaner,
             "all_compyuters_with_mfo": all_compyuters_with_mfo,
@@ -235,6 +237,7 @@ class GetTexnologyFromAgent(APIView):
             #     comp.slug = f"computers/{comp.mac_adress}"
 
             comp.internet = data.get("Internet")
+            
             comp.save()
             # ManyToMany fields (clear and add new)
             m2m_fields = {
@@ -276,6 +279,10 @@ class FilterDataByIPApiView(APIView):
         elif key == "Рабочие компьютеры":
 
             computers = Compyuter.objects.filter(isActive=True).distinct()
+
+        elif key == "Не рабочие компьютеры":
+
+            computers = Compyuter.objects.filter(isActive=False).distinct()
 
         elif key == "Принтеры":
   

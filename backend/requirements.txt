@@ -56,3 +56,4 @@ drf_spectacular_sidecar
 pandas
 getmac
 django-simple-history
+psycopg2-binary

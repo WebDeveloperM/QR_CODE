@@ -104,6 +104,7 @@ export type InfoComputerData = {
     all_compyuters_with_mfo: number,
     all_compyuters_with_webcam: number,
     all_compyuters_with_net: number
+    all_noworked_compyuters_count: number
 };
 
 
