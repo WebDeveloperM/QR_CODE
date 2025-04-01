@@ -134,26 +134,26 @@ const EditCompyuter = forwardRef(({ program }: Props, ref) => {
 
     const erroMessage = 'Обязательное поле';
 
-    if (!inputSealNumberRef.current?.value) {
-      setSealNumber({ error: erroMessage })
-      toast.warning("Существует обязательное поле.")
-      return
-    }
+    // if (!inputSealNumberRef.current?.value) {
+    //   setSealNumber({ error: erroMessage })
+    //   toast.warning("Существует обязательное поле.")
+    //   return
+    // }
     if (!inputUserRef.current?.value) {
       setUser({ error: erroMessage })
       toast.warning("Существует обязательное поле.")
       return
     }
-    if (!inputIPAddresRef.current?.value) {
-      setIpAddressId({ error: erroMessage })
-      toast.warning("Существует обязательное поле.")
-      return
-    }
-    if (!inputMacAddresRef.current?.value) {
-      setMacAddressId({ error: erroMessage })
-      toast.warning("Существует обязательное поле.")
-      return
-    }
+    // if (!inputIPAddresRef.current?.value) {
+    //   setIpAddressId({ error: erroMessage })
+    //   toast.warning("Существует обязательное поле.")
+    //   return
+    // }
+    // if (!inputMacAddresRef.current?.value) {
+    //   setMacAddressId({ error: erroMessage })
+    //   toast.warning("Существует обязательное поле.")
+    //   return
+    // }
 
     const formData = {
       seal_number: seal_number.value,
@@ -530,7 +530,7 @@ const EditCompyuter = forwardRef(({ program }: Props, ref) => {
                         onChange={(e) =>
                           setSealNumber({ value: e.target.value })
                         }
-                        ref={inputSealNumberRef}
+                        // ref={inputSealNumberRef}
                         placeholder="Номер пломбы"
                         className={`w-full rounded-md  bg-transparent py-2 px-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${seal_number.error ? 'border-red' : 'border-stroke'
                           }`}
@@ -548,7 +548,7 @@ const EditCompyuter = forwardRef(({ program }: Props, ref) => {
                       </label>
                       <input
                         type="text"
-                        ref={inputIPAddresRef}
+                        // ref={inputIPAddresRef}
                         defaultValue={compyuterDetailData?.ipadresss}
                         onChange={(e) =>
                           setIpAddressId({ value: e.target.value })
@@ -571,7 +571,7 @@ const EditCompyuter = forwardRef(({ program }: Props, ref) => {
                       <input
                         type="text"
                         defaultValue={compyuterDetailData?.mac_adress}
-                        ref={inputMacAddresRef}
+                        // ref={inputMacAddresRef}
                         onChange={(e) =>
                           setMacAddressId({ value: e.target.value })
                         }

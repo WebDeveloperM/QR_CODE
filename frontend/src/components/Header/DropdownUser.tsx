@@ -24,7 +24,7 @@ const DropdownUser = () => {
           <span className="block text-sm font-medium text-black dark:text-white">
             {firstname} {lastname}
           </span>
-          <span className="block text-xs">{firstname || lastname ? "28-цех" : ""}</span>
+          {/* <span className="block text-xs">{firstname || lastname ? "28-цех" : ""}</span> */}
         </span>
 
         <span className="h-12 w-12 rounded-full">

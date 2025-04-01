@@ -342,7 +342,7 @@ const OrgTex = forwardRef(({ program, compyuterDetailData, setCompyuterDetailDat
                                                 <input
                                                     type="text"
                                                     onChange={(e) => setSealNumber({ value: e.target.value })}
-                                                    ref={inputSealNumberRef}
+                                                    // ref={inputSealNumberRef}
                                                     placeholder="Номер пломбы"
                                                     className={`w-full rounded-md  bg-transparent py-2 px-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${seal_number.error ? 'border-red' : "border-stroke"}`}
                                                 />

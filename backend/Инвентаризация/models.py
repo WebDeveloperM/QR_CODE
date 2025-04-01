@@ -296,7 +296,7 @@ class Program(models.Model):
 import hashlib
 
 class Compyuter(models.Model):
-    seal_number = models.CharField(max_length=255, verbose_name='Номер пломбы')
+    seal_number = models.CharField(max_length=255, verbose_name='Номер пломбы', null=True, blank=True)
     departament = models.ForeignKey('Department', on_delete=models.CASCADE, verbose_name="Цех", null=True, blank=True)
     user = models.CharField(max_length=255, verbose_name='Пользователь', null=True, blank=True)
     warehouse_manager = models.ForeignKey(WarehouseManager, on_delete=models.CASCADE, verbose_name='Зав. склада', null=True, blank=True)
@@ -356,7 +356,7 @@ class Compyuter(models.Model):
 
     def generate_qr(self):
         """QR-kodni yaratish va uni rasm sifatida saqlash."""
-        if self.seal_number:  # Slug mavjud bo'lsa, QR-kodni yaratish
+        if self.slug:  # Slug mavjud bo'lsa, QR-kodni yaratish
             qr = qrcode.QRCode(
                 version=1,
                 error_correction=qrcode.constants.ERROR_CORRECT_L,

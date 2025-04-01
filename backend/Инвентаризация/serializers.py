@@ -185,6 +185,7 @@ class ProgramSerializer(serializers.ModelSerializer):
 
 
 class CompyuterSerializer(serializers.ModelSerializer):
+    
     departament = DepartmentSerializer()  # Use nested serializer
     warehouse_manager = WarehouseManagerSerializer()  # Use nested serializer
     type_compyuter = TypeCompyuterSerializer()
