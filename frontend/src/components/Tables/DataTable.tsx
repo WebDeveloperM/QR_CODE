@@ -133,6 +133,47 @@ export default function ComputerTable({ checkedComputer, setDeleteCompForChecked
             </a>
         );
     };
+    const idComputerBodyTemplate = (_rowData: Compyuter, options: { rowIndex: number }) => {
+        return (
+            <p className="pl-5">{options.rowIndex + 1}</p> // Indeks 0-dan boshlanadi, shuning uchun +1 qo‘shamiz
+        );
+    };
+
+    // Header style umumiy
+    const headerStyle = { fontWeight: 'bold', textAlign: 'center', padding: "10px", color: "black", border: "1px solid #c8c5c4" };
+
+    // Input filter (Matnli qidiruv)
+    const inputFilterTemplate = (options) => {
+        return <InputText type="text" value={options.value || ''} onChange={(e) => options.filterCallback(e.target.value)} />;
+    };
+
+    // Dropdown filter (Tanlanadigan ro‘yxat)
+    const dropdownFilterTemplate = (options) => {
+        const departaments = [...new Set(computers.map((c) => c.departament.name))]; // Unikal qiymatlar olish
+        return (
+            <Dropdown value={options.value} options={departaments} onChange={(e) => options.filterCallback(e.value)}
+                placeholder="Выберите" showClear className="w-full" />
+        );
+    };
+
+    // MultiSelect filter (Bir nechta tanlov)
+    const multiSelectFilterTemplate = (options) => {
+        const types = [...new Set(computers.map((c) => c.type_compyuter.name))];
+        return (
+            <MultiSelect value={options.value} options={types} onChange={(e) => options.filterCallback(e.value)}
+                placeholder="Выберите" className="w-full" />
+        );
+    };
+
+    // Checkbox filter (Ha/Yo‘q)
+    const checkboxFilterTemplate = (options) => {
+        return (
+            <div className="flex items-center">
+                <Checkbox inputId="filterActive" checked={options.value} onChange={(e) => options.filterCallback(e.checked)} />
+                <label htmlFor="filterActive" className="ml-2">Активен</label>
+            </div>
+        );
+    };
 
     return (
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -161,7 +202,7 @@ export default function ComputerTable({ checkedComputer, setDeleteCompForChecked
                 </div>
             </div>
 
-            <DataTable value={computers} rows={500} filters={filters}
+            {/* <DataTable value={computers} rows={500} filters={filters}
                 // paginator
                 // paginatorTemplate="PrevPageLink PageLinks NextPageLink"
                 emptyMessage={
@@ -170,14 +211,46 @@ export default function ComputerTable({ checkedComputer, setDeleteCompForChecked
                     </div>
                 }
                 globalFilterFields={["departament.name", "user", "type_compyuter.name", "ipadresss"]} rowClassName={() => "border border-gray-300"} className="p-3 table-border">
+                <Column field="id" header="№" body={idComputerBodyTemplate} headerStyle={{ fontWeight: 'bold', textAlign: 'center', paddingLeft:"15px", color: "black", border: "1px solid #c8c5c4" }} />
                 <Column field="qr_image" header="Qr_code" body={qrCodeBodyTemplate} headerStyle={{ fontWeight: 'bold', textAlign: 'center', padding: "10px", paddingLeft: "10px", color: "black", border: "1px solid #c8c5c4" }} />
-                <Column field="departament.name" header="Цехы" filter filterPlaceholder="Поиск по цехы" showFilterMenuOptions={false} showApplyButton={false} showClearButton={false} headerStyle={{ fontWeight: 'bold', border: "1px solid #c8c5c4",  textAlign: 'center', padding: "10px", color: "black" }} />
-                <Column field="user" header="Пользователь" filter filterPlaceholder="Поиск по пользователь" showFilterMenuOptions={false} showApplyButton={false} showClearButton={false} headerStyle={{ fontWeight: 'bold', border: "1px solid #c8c5c4",  textAlign: 'center', padding: "10px", color: "black" }} />
-                <Column field="type_compyuter.name" body={typeComputerBodyTemplate} header="Тип орг.техники" filter filterPlaceholder="Поиск по тип орг.техники" showFilterMenuOptions={false} showApplyButton={false} showClearButton={false} headerStyle={{ fontWeight: 'bold', border: "1px solid #c8c5c4",  textAlign: 'center', padding: "10px", color: "black" }} />
-                <Column field="ipadresss" header="IP аддрес" filter filterPlaceholder="Поиск по IP аддрес" showFilterMenuOptions={false} showApplyButton={false} showClearButton={false} headerStyle={{ fontWeight: 'bold',  border: "1px solid #c8c5c4", textAlign: 'center', padding: "10px", color: "black" }} />
-                <Column field="isActive" header="Активен" body={isActiveBodyTemplate} headerStyle={{ fontWeight: 'bold',  textAlign: 'center', padding: "10px", color: "black", border: "1px solid #c8c5c4" }} />
-                <Column field="actions" header="Действия" body={isDetail} headerStyle={{ fontWeight: 'bold',  textAlign: 'center', padding: "10px", color: "black", border: "1px solid #c8c5c4" }} />
+                <Column field="departament.name" header="Цехы" filter filterPlaceholder="Поиск по цехы" showFilterMenuOptions={false} showApplyButton={false} showClearButton={false} headerStyle={{ fontWeight: 'bold', border: "1px solid #c8c5c4", textAlign: 'center', padding: "10px", color: "black" }} />
+                <Column field="user" header="Пользователь" filter filterPlaceholder="Поиск по пользователь" showFilterMenuOptions={false} showApplyButton={false} showClearButton={false} headerStyle={{ fontWeight: 'bold', border: "1px solid #c8c5c4", textAlign: 'center', padding: "10px", color: "black" }} />
+                <Column field="type_compyuter.name" body={typeComputerBodyTemplate} header="Тип орг.техники" filter filterPlaceholder="Поиск по тип орг.техники" showFilterMenuOptions={false} showApplyButton={false} showClearButton={false} headerStyle={{ fontWeight: 'bold', border: "1px solid #c8c5c4", textAlign: 'center', padding: "10px", color: "black" }} />
+                <Column field="ipadresss" header="IP аддрес" filter filterPlaceholder="Поиск по IP аддрес" showFilterMenuOptions={false} showApplyButton={false} showClearButton={false} headerStyle={{ fontWeight: 'bold', border: "1px solid #c8c5c4", textAlign: 'center', padding: "10px", color: "black" }} />
+                <Column field="isActive" header="Активен" body={isActiveBodyTemplate} headerStyle={{ fontWeight: 'bold', textAlign: 'center', padding: "10px", color: "black", border: "1px solid #c8c5c4" }} />
+                <Column field="actions" header="Действия" body={isDetail} headerStyle={{ fontWeight: 'bold', textAlign: 'center', padding: "10px", color: "black", border: "1px solid #c8c5c4" }} />
+            </DataTable> */}
+
+            <DataTable value={computers} rows={500} filters={filters}
+                emptyMessage={
+                    <div style={{ textAlign: "center", padding: "20px", fontSize: "16px", fontWeight: "bold", color: "gray" }}>
+                        🚫 Данные не найдены
+                    </div>
+                }
+                globalFilterFields={["departament.name", "user", "type_compyuter.name", "ipadresss"]}
+                rowClassName={() => "border border-gray-300"} className="p-3 table-border">
+
+                <Column field="id" header="№" body={idComputerBodyTemplate} headerStyle={headerStyle} />
+                <Column field="qr_image" header="Qr_code" body={qrCodeBodyTemplate} headerStyle={headerStyle} />
+
+                <Column field="departament.name" header="Цехы" filter filterElement={dropdownFilterTemplate}
+                    filterMatchMode="contains" headerStyle={headerStyle} />
+
+                <Column field="user" header="Пользователь" filter filterElement={inputFilterTemplate}
+                    filterMatchMode="startsWith" headerStyle={headerStyle} />
+
+                <Column field="type_compyuter.name" header="Тип орг.техники" filter filterElement={multiSelectFilterTemplate}
+                    filterMatchMode="equals" headerStyle={headerStyle} />
+
+                <Column field="ipadresss" header="IP аддрес" filter filterElement={inputFilterTemplate}
+                    filterMatchMode="contains" headerStyle={headerStyle} />
+
+                <Column field="isActive" header="Активен" body={isActiveBodyTemplate}
+                    filter filterElement={checkboxFilterTemplate} filterMatchMode="equals" headerStyle={headerStyle} />
+
+                <Column field="actions" header="Действия" body={isDetail} headerStyle={headerStyle} />
             </DataTable>
+
 
 
             <div className="font-semibold p-5 pt-0">
